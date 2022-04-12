@@ -1,27 +1,32 @@
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import auth from "../../Firebase/Firebase.init";
 import "./Navbar.css";
 
 const Navbar = () => {
-  const [user, setUser] = useState('')
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // User is signed in
-      setUser(user?.uid)
-    } else {
-      // User is signed out
-    }
-  });
+  const [user, setUser] = useState({})
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in
+        setUser(user)
+      } else {
+        // User is signed out
+      }
+    });
+ }, [])
 
   const logOut = () => {
     signOut(auth)
       .then(() => {
+        setUser({})
+        console.log('Sign Out');
       // Sign Out
       })
       .catch(error => {
       // An Error Occured
+        console.log("Error");
     })
   }
 
@@ -61,7 +66,7 @@ const Navbar = () => {
             My Classes
           </NavLink>
           {
-            user?.uid ? <button onClick={logOut} className="signOut">Sign Out</button> :  <NavLink
+            user.uid ? <button onClick={logOut} className="signOut">Sign Out</button> :  <NavLink
             to={"/signup"}
             className={({ isActive }) =>
               isActive ? "text-blue-600" : "text-slate-700"
