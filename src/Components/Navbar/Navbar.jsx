@@ -1,13 +1,39 @@
-import React from "react";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import auth from "../../Firebase/Firebase.init";
 import "./Navbar.css";
 
 const Navbar = () => {
+  const [user, setUser] = useState('')
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in
+      setUser(user?.uid)
+    } else {
+      // User is signed out
+    }
+  });
+
+  const logOut = () => {
+    signOut(auth)
+      .then(() => {
+      // Sign Out
+      })
+      .catch(error => {
+      // An Error Occured
+    })
+  }
+
   return (
     <div className="bg-slate-300">
       <div className="container mx-auto flex items-center justify-between h-20">
         <div className="logo">
-          <h1 className="text-2xl text-blue-600"><Link className="font-bold" to={'/'}>Coding Bootcamp</Link></h1>
+          <h1 className="text-2xl text-blue-600">
+            <Link className="font-bold" to={"/"}>
+              Coding Bootcamp
+            </Link>
+          </h1>
         </div>
         <nav>
           <NavLink
@@ -34,7 +60,8 @@ const Navbar = () => {
           >
             My Classes
           </NavLink>
-          <NavLink
+          {
+            user?.uid ? <button onClick={logOut} className="signOut">Sign Out</button> :  <NavLink
             to={"/signup"}
             className={({ isActive }) =>
               isActive ? "text-blue-600" : "text-slate-700"
@@ -42,6 +69,7 @@ const Navbar = () => {
           >
             Sing Up
           </NavLink>
+         }
           <NavLink
             to={"/about"}
             className={({ isActive }) =>

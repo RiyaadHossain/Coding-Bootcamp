@@ -1,8 +1,42 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import auth from '../../Firebase/Firebase.init';
 import './LogIn.css'
 
 const LogIn = () => {
+    const navigate = useNavigate()
+    const [email, setEmail] = useState({ value: '', error: '' })
+    const [password, setPassword] = useState({ value: '', error: '' })
+    const onEmailBlur = e => {
+        const email = e.target.value
+        if (/\S+@\S+\.\S+/.test(email)) {
+            setEmail({ value: email, error: '' })
+        } else {
+            setEmail({ value: '', error: 'Invalid Email' })
+        }
+    }
+        const onPasswordBlur = e => {
+            const password = e.target.value
+            if (password.length > 5) {
+                setPassword({ value: password, error: '' })
+            } else {
+                setPassword({ value: '', error: 'Too Short' })
+            }
+        }
+        const onFormSubmit = e => {
+            e.preventDefault()
+            signInWithEmailAndPassword(auth, email.value, password.value)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                console.log(user);
+                navigate('/')
+              })
+              .catch((error) => {
+                const errorMessage = error.message;
+                console.log(errorMessage);
+              });
+        }
     return (
         <div className="h-[79vh]">
       <div className="wrapper fadeInDown">
@@ -12,15 +46,17 @@ const LogIn = () => {
 
           <div className="fadeIn first"></div>
 
-          <form>
-            <input
+          <form onSubmit={onFormSubmit}>
+                        <input
+                            onBlur={onEmailBlur}
               type="email"
               id="email"
               className="fadeIn second"
               name="email"
               placeholder="Email"
             />
-            <input
+                        <input
+                            onBlur={onPasswordBlur}
               type="password"
               id="password"
               className="fadeIn third"
