@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -7,7 +7,7 @@ const Navbar = () => {
     <div className="bg-slate-300">
       <div className="container mx-auto flex items-center justify-between h-20">
         <div className="logo">
-          <h1 className="text-2xl font-bold text-blue-600">Logo</h1>
+          <h1 className="text-2xl text-blue-600"><Link className="font-bold" to={'/'}>Coding Bootcamp</Link></h1>
         </div>
         <nav>
           <NavLink
