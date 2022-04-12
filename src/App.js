@@ -5,6 +5,7 @@ import About from './Components/About/About';
 import Courses from './Components/Courses/Courses';
 import Footer from './Components/Footer/Footer';
 import Home from './Components/Home/Home';
+import LogIn from './Components/LogIn/LogIn';
 import MyClasses from './Components/MyClasses/MyClasses';
 import Navbar from './Components/Navbar/Navbar';
 import SignUp from './Components/SignUp/SignUp';
@@ -18,6 +19,7 @@ function App() {
         <Route path='/courses' element={<Courses/>} />
         <Route path='/myclasses' element={<MyClasses/>} />
         <Route path='/signup' element={<SignUp/>} />
+        <Route path='/login' element={<LogIn/>} />
         <Route path='/about' element={<About/>} />
       </Routes>
       <Footer/>
