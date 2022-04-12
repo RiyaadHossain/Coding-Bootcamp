@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import auth from "../../Firebase/Firebase.init";
 import "./SignUp.css";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -55,11 +56,18 @@ const SignUp = () => {
         .then((userCredential) => {
           const user = userCredential.user;
           console.log(user);
-          navigate("/");
+            navigate("/");
+            toast.success("Account Created")
         })
         .catch((error) => {
           const errorMessage = error.message;
-          console.log(errorMessage);
+            console.log(errorMessage);
+            if (errorMessage.includes('email-already-in-use')) {
+                toast.error("Already Exist", {id: 'test'})
+            }
+            else {
+                toast.error(errorMessage)
+            }
         });
     }
   };

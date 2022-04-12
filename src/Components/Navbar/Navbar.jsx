@@ -1,5 +1,6 @@
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { Link, NavLink } from "react-router-dom";
 import auth from "../../Firebase/Firebase.init";
 import "./Navbar.css";
@@ -22,6 +23,7 @@ const Navbar = () => {
       .then(() => {
         setUser({})
         console.log('Sign Out');
+        toast.success("Signed Out")
       // Sign Out
       })
       .catch(error => {
