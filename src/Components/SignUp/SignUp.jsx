@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import auth from "../../Firebase/Firebase.init";
 import "./SignUp.css";
 import toast from "react-hot-toast";
 
 const SignUp = () => {
+  const location = useLocation()
   const navigate = useNavigate();
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
@@ -13,6 +14,7 @@ const SignUp = () => {
     value: "",
     error: "",
   });
+  let from = location.state?.from?.pathname || "/";
   const onEmailBlur = (e) => {
     const email = e.target.value;
     if (/\S+@\S+\.\S+/.test(email)) {
@@ -56,7 +58,7 @@ const SignUp = () => {
         .then((userCredential) => {
           const user = userCredential.user;
           console.log(user);
-            navigate("/");
+          navigate(from, { replace: true });
             toast.success("Account Created")
         })
         .catch((error) => {

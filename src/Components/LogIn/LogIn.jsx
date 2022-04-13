@@ -1,14 +1,16 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import auth from "../../Firebase/Firebase.init";
 import "./LogIn.css";
 
 const LogIn = () => {
+  const location = useLocation()
   const navigate = useNavigate();
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
+  let from = location.state?.from?.pathname || "/";
   const onEmailBlur = (e) => {
     const email = e.target.value;
     if (/\S+@\S+\.\S+/.test(email)) {
@@ -39,7 +41,7 @@ const LogIn = () => {
             const user = userCredential.user;
             console.log(user);
           toast.success("Signed In")
-          navigate("/");
+          navigate(from, { replace: true });
         })
         .catch((error) => {
           const errorMessage = error.message;
